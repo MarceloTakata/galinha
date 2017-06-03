@@ -46,8 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\celeiro.cs" />
      <Compile Include="Assets\Script\galinha.cs" />
      <Compile Include="Assets\Script\pontuacao.cs" />
+     <Compile Include="Assets\Script\selecao.cs" />
      <Compile Include="Assets\Script\veiculo.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>

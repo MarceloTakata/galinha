@@ -13,7 +13,7 @@ public class galinha : MonoBehaviour {
 	private float posRetaX, posRetaY;
 	private float posClickX, posClickY;
 	private bool AcimaA, AcimaB;
-	private Rigidbody2D player;
+	public static Rigidbody2D player;
 	private float posicaoX, posicaoY;
 	public float velocidade;
 	private SpriteRenderer playerSR;
@@ -22,6 +22,9 @@ public class galinha : MonoBehaviour {
 	private AudioSource audioBatida;
 	private float tempoParaAndar;
 	public float tempoParaAndarDefault;
+	private selecao sel;
+
+	public SpriteRenderer[] playerSelected;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +36,12 @@ public class galinha : MonoBehaviour {
 		posicaoX = 0;
 		posicaoY = 0;
 		tempoParaAndar = 0;
+		sel = GetComponentInParent<selecao> ();
+		Debug.LogError (sel);
+		//this.gameObject.GetComponent<SpriteRenderer> ().sprite = playerSelected [sel.idPlayer].sprite;
+		this.gameObject.GetComponent<SpriteRenderer> ().sprite = playerSelected[1].sprite;
+		// temporário
+		tempoParaAndarDefault = 0.75f;
 	}
 	
 	// Update is called once per frame
@@ -114,47 +123,50 @@ public class galinha : MonoBehaviour {
 	}
 
 	void OnCollisionStay2D(Collision2D colisao) {
+		string tipoVeiculo;
+		int velocidadeVeiculo;
+		tipoVeiculo = colisao.gameObject.tag.Substring (0, 1);
 		// Se o objeto que colidiu com o player for V1, V2, V3,...,Vn (primeira posição da tag = "V")
-		if (colisao.gameObject.tag.Substring (0, 1) == "V") {
-			// Toca áudio de batida
+		if (tipoVeiculo == "V") {
+			velocidadeVeiculo = int.Parse(colisao.gameObject.tag.Substring (1, 1));// Toca áudio de batida
 			PlayAudio (audioBatida);
-			// Recua o player para baixo
-			posicaoY = player.position.y - velocidade / 10;
-			// Verifica se excedeu limite inferior
-			if (posicaoY < limiteInferior) {
-				posicaoY = limiteInferior;
-			}
-			// Se o player estiver do lado esquerdo do veículo
-			if (player.position.x < colisao.rigidbody.position.x) {
-				// Recua o player para esquerda
-				posicaoX = player.position.x - velocidade / 10;
-				// Verifica se excedeu limite esquerdo
-				if (posicaoX < limiteEsquerdo) {
-					posicaoX = limiteEsquerdo;
+			// Objeto em movimento: veículo
+			if (velocidadeVeiculo > 0) {
+				// Recua o player para baixo
+				posicaoY = player.position.y - velocidade / 10;
+				// Verifica se excedeu limite inferior
+				if (posicaoY < limiteInferior) {
+					posicaoY = limiteInferior;
 				}
-			} else {
-				// Se o player estiver do lado direito do veículo
-				// obs: colisao.collider.offset.x é o limite mais à direita do veículo em relação ao próprio veículo
-				if (player.position.x > colisao.rigidbody.position.x + colisao.collider.offset.x) {
-					// Recua o player para direita
-					posicaoX = player.position.x + velocidade / 10;
-					// Verifica se excedeu limite direito
-					if (posicaoX > limiteDireito) {
-						posicaoX = limiteDireito;
+				// Se o player estiver do lado esquerdo do veículo
+				if (player.position.x < colisao.rigidbody.position.x) {
+					// Recua o player para esquerda
+					posicaoX = player.position.x - velocidade / 10;
+					// Verifica se excedeu limite esquerdo
+					if (posicaoX < limiteEsquerdo) {
+						posicaoX = limiteEsquerdo;
+					}
+				} else {
+					// Se o player estiver do lado direito do veículo
+					// obs: colisao.collider.offset.x é o limite mais à direita do veículo em relação ao próprio veículo
+					if (player.position.x > colisao.rigidbody.position.x + colisao.collider.offset.x) {
+						// Recua o player para direita
+						posicaoX = player.position.x + velocidade / 10;
+						// Verifica se excedeu limite direito
+						if (posicaoX > limiteDireito) {
+							posicaoX = limiteDireito;
+						}
 					}
 				}
+			} else {
+				// Objeto parado: muro
+				posicaoY = player.position.y - velocidade / 5;
+				posicaoX = player.position.x;
 			}
 			// Atualiza posição do player
 			player.position = new Vector2 (posicaoX, posicaoY);
 			// Inicializa a contagem regressiva para poder andar de novo
 			tempoParaAndar = tempoParaAndarDefault;
-		}
-		// Se o objeto que colidiu com o player for do tipo celeiro
-		if (colisao.gameObject.tag == "celeiro") {
-			// TEMP: Soma 1 na pontuação
-			pontuacao.pontos += 1;
-			// Coloca o player na posição inicial
-			player.position = new Vector2 (0, limiteInferior);
 		}
 	}
 
