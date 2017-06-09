@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class porco : MonoBehaviour {
 
-
-	private const float limiteInferior = -4.75f;
-	private const float limiteEsquerdo = -8;
-	private const float limiteDireito = 8;
-
 	private Vector3 posicao;
 
-	private float posRetaX, posRetaY;
-	private float posClickX, posClickY;
-	private bool AcimaA, AcimaB;
 	private Rigidbody2D player;
-	private float posicaoX, posicaoY;
 	public float velocidade;
 	private SpriteRenderer playerSR;
 	private AudioSource[] playerAS;
@@ -25,7 +16,7 @@ public class porco : MonoBehaviour {
 	public float tempoParaAndarDefault;
 	private int local;	// 0 = estrada , 1 = rio
 	public int myId;
-	public int recuo;
+	public float recuo;
 
 	// Use this for initialization
 	void Start () {
@@ -34,8 +25,6 @@ public class porco : MonoBehaviour {
 		playerAS = GetComponents<AudioSource> ();
 		audioMorri = playerAS [0];
 		audioBatida = playerAS[1];
-		posicaoX = 0;
-		posicaoY = 0;
 		tempoParaAndar = 0;
 		local = 0;
 	}

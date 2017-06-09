@@ -17,14 +17,12 @@ public class galinha : MonoBehaviour {
 	private int local;	// 0 = estrada , 1 = rio
 	public int myId;
 	public float recuo;
-	public Collider2D playerCollider;
 
 	// Use this for initialization
 	void Start () {
 		player = GetComponent<Rigidbody2D> ();
 		playerSR = GetComponent<SpriteRenderer> ();
 		playerAS = GetComponents<AudioSource> ();
-		playerCollider = GetComponent<Collider2D> ();
 		audioMorri = playerAS [0];
 		audioBatida = playerAS[1];
 		tempoParaAndar = 0;
