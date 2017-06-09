@@ -22,7 +22,7 @@ public class pontuacao : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		pontosTXT.text = "Pontos: " + pontos.ToString () + " Fase: " + fase.ToString ();
+		pontosTXT.text = "Pontos: " + pontos.ToString () + " Fase: " + fase.ToString () + " Player selectonado: " + selecao.idPlayer;
 		// Se os 5 celeiros forem ocupados
 		if (pontuacao.pontos == 5) {
 			// Zera
