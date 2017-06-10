@@ -47,7 +47,7 @@ public class porco : MonoBehaviour {
 			if (Input.GetMouseButton (0)) {
 				// Pega a posição clicada
 				posicao = Input.mousePosition;
-				move = comum.trataMovimento (playerSR, posicao, this.transform.position.x, this.transform.position.y, velocidade);
+//				move = comum.trataMovimento (playerSR, posicao, this.transform.position.x, this.transform.position.y, velocidade);
 			} else {
 				// Mantém o player parado, botão do mouse não clicado
 				move = new Vector2(0, 0);
@@ -57,7 +57,7 @@ public class porco : MonoBehaviour {
 			move = new Vector2(0, 0);
 		}
 		// Atualiza a posição do player
-		player.velocity = move;
+//		player.velocity = move;
 	}
 
 	void OnCollisionEnter2D(Collision2D colisao) {

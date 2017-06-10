@@ -18,6 +18,9 @@ public class galinha : MonoBehaviour {
 	public int myId;
 	public float recuo;
 
+	private Vector2 posicaoInicial;
+	private Vector2 posicaoFinal;
+
 	// Use this for initialization
 	void Start () {
 		player = GetComponent<Rigidbody2D> ();
@@ -32,6 +35,7 @@ public class galinha : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector2 move;
+		int debugMove;
 		if (selecao.idPlayer != myId) {
 			this.transform.position = new Vector2(0,-10);
 			return;
@@ -43,19 +47,34 @@ public class galinha : MonoBehaviour {
 		if (tempoParaAndar <= 0) {
 			// Força a zerar o tempo
 			tempoParaAndar = 0;
-			// Se o botão esquerdo foi pressionado
-			if (Input.GetMouseButton (0)) {
-				// Pega a posição clicada
-				posicao = Input.mousePosition;
-				move = comum.trataMovimento (playerSR, posicao, this.transform.position.x, this.transform.position.y, velocidade);
+			move = new Vector2 (0, 0);
+			debugMove = 1;
+
+			if (debugMove == 0) {
+				if (Input.GetMouseButtonDown (0)) {
+					posicaoInicial = Input.mousePosition;
+					move = new Vector2 (0, 0);
+				}
+				if (Input.GetMouseButtonUp (0)) {
+					posicaoFinal = Input.mousePosition;
+					move = comum.trataMovimento (playerSR, this.transform.position.x, this.transform.position.y, posicaoInicial, posicaoFinal, velocidade);
+				}
 			} else {
-				// Mantém o player parado, botão do mouse não clicado
-				move = new Vector2(0, 0);
+				// Se o botão esquerdo foi pressionado
+				if (Input.GetMouseButton (0)) {
+					// Pega a posição clicada
+					posicao = Input.mousePosition;
+					move = comum.trataMovimentoOld (playerSR, posicao, this.transform.position.x, this.transform.position.y, velocidade);
+				} else {
+					// Mantém o player parado, botão do mouse não clicado
+					move = new Vector2(0, 0);
+				}
 			}
 		} else {
 			// Mantém o player parado, acabou de ser atropelado
 			move = new Vector2(0, 0);
 		}
+
 		// Atualiza a posição do player
 		player.velocity = move;
 	}
@@ -73,6 +92,6 @@ public class galinha : MonoBehaviour {
 			player.position = comum.trataRecuo (this.transform.position.x, this.transform.position.y, colisao.transform.position.x, colisao.transform.position.x + colisao.collider.offset.x, recuo, velocidadeVeiculo);
 			// Inicializa a contagem regressiva para poder andar de novo
 			tempoParaAndar = tempoParaAndarDefault;
-		}	
+		}
 	}
 }

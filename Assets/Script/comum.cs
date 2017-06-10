@@ -19,7 +19,7 @@ public class comum : MonoBehaviour {
 		}
 	}
 
-	public static Vector2 trataMovimento(SpriteRenderer playerSR, Vector3 posicao, float X, float Y, float velocidade){
+	public static Vector2 trataMovimentoOld(SpriteRenderer playerSR, Vector3 posicao, float X, float Y, float velocidade){
 		float posRetaX, posRetaY;
 		float posClickX, posClickY;
 		float posicaoX, posicaoY;
@@ -78,6 +78,54 @@ public class comum : MonoBehaviour {
 		return new Vector2(posicaoX, posicaoY);
 	}
 
+	public static Vector2 trataMovimento(SpriteRenderer playerSR, float X, float Y, Vector2 posicaoInicial, Vector2 posicaoFinal, float velocidade){
+		float posicaoX = 0, posicaoY = 0;
+		// Verificar se o arrasto foi na vertical ou na horizontal
+		float arrastoX = Mathf.Abs ((posicaoFinal.x - posicaoInicial.x));
+		float arrastoY = Mathf.Abs ((posicaoFinal.y - posicaoInicial.y));
+		// Arrasto horizontal
+		if (arrastoX > arrastoY) {
+			// Arrastou para direita
+			if (posicaoFinal.x > posicaoInicial.x) {
+				if (X < limiteDireito) {
+					posicaoX = velocidade;
+					posicaoY = 0;
+					playerSR.flipX = false;
+				} else {
+					// Verifica se excedeu limite direito
+					posicaoX = 0;
+				}
+			} else {
+				// Arrastou para esquerda
+				if (X > limiteEsquerdo) {
+					posicaoX = velocidade * -1;
+					posicaoY = 0;
+					playerSR.flipX = true;
+				} else {
+					// Verifica se excedeu limite esquerdo
+					posicaoX = 0;
+				}
+			}
+		} else {
+			// Arrasto vertical
+			// Arrastou para cima
+			if (posicaoFinal.y > posicaoInicial.y) {
+				posicaoY = velocidade;
+				posicaoX = 0;
+			} else {
+				// Arrastou para baixo
+				if (Y > limiteInferior) {
+					posicaoY = velocidade * -1;
+					posicaoX = 0;
+				} else {
+					// Verifica se excedeu limite inferior
+					posicaoY = 0;
+				}
+			}
+		}
+		return new Vector2 (posicaoX, posicaoY);
+	}
+
 	public static Vector2 trataRecuo(float X, float Y, float esquerda, float direita, float recuo, int velocidadeVeiculo){
 		float posicaoX, posicaoY;
 		// Objeto em movimento: veículo
@@ -85,22 +133,17 @@ public class comum : MonoBehaviour {
 			// Recua o player para baixo
 			posicaoX = X;
 			posicaoY = Y - recuo;
-			//posicaoY = -1 * recuo * velocidade;
-			//posicaoX = 0;
 			// Verifica se excedeu limite inferior
 			if (Y < limiteInferior) {
 				posicaoY = limiteInferior;
-				posicaoY = 0;
 			}
 			// Se o player estiver do lado esquerdo do veículo
 			if (X < esquerda) {
 				// Recua o player para esquerda
 				posicaoX = X - recuo;
-				//posicaoX = -1 * recuo * velocidade;
 				// Verifica se excedeu limite esquerdo
 				if (X < limiteEsquerdo) {
 					posicaoX = limiteEsquerdo;
-					//posicaoX = 0;
 				}
 			} else {
 				// Se o player estiver do lado direito do veículo
@@ -108,11 +151,9 @@ public class comum : MonoBehaviour {
 				if (X > direita) {
 					// Recua o player para direita
 					posicaoX = X + recuo;
-					//posicaoX = recuo * velocidade;
 					// Verifica se excedeu limite direito
 					if (X > limiteDireito) {
 						posicaoX = limiteDireito;
-						//posicaoX = 0;
 					}
 				}
 			}
@@ -122,6 +163,13 @@ public class comum : MonoBehaviour {
 			posicaoY = Y - recuo;
 			//posicaoX = 0;
 		}
+		return new Vector2 (posicaoX, posicaoY);
+	}
+
+	public static Vector2 trataRio(float X, float Y, Collision2D colisao){
+		float posicaoX, posicaoY;
+		posicaoX = X;
+		posicaoY = colisao.transform.position.y;
 		return new Vector2 (posicaoX, posicaoY);
 	}
 }
