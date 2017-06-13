@@ -10,22 +10,19 @@ public class selecao : MonoBehaviour {
 	private Vector2 posicaoFinal;
 
 	public SpriteRenderer[] player;
-//	private SpriteRenderer playerToSelect;
-	public static int idPlayer;
+	private static int idPlayer;
 	private float scaleX, scaleY;
 	private float arrastoX, arrastoY;
-	private AudioSource audio;
+	private AudioSource[] audios;
 	private int status;	// 0 = selecionando , 1 = baixando som
 	private float tempo;
 
 	// Use this for initialization
 	void Start () {
-		idPlayer = 0;
-		audio = GetComponent<AudioSource>();
-		DontDestroyOnLoad (transform.gameObject);
+		manter.idPlayer = 0;
+		audios = GetComponents<AudioSource> ();
 		status = 0;
 		tempo = 1f;
-		audio.volume = 1f;
 
 		//player = GetComponent<SpriteRenderer> ();
 	}
@@ -38,7 +35,7 @@ public class selecao : MonoBehaviour {
 			}
 			if (Input.GetMouseButtonUp (0)) {
 				posicaoFinal = Input.mousePosition;
-				if (posicaoFinal.x >= (Screen.width * 0.905f) && posicaoFinal.x <= (Screen.width * 0.975f) && posicaoFinal.y >= (Screen.height * 0.039f) && posicaoFinal.y <= (Screen.height * 0.165f)) {
+				if (posicaoFinal.x >= (Screen.width * 0.9f) && posicaoFinal.x <= (Screen.width * 0.98f) && posicaoFinal.y >= (Screen.height * 0.039f) && posicaoFinal.y <= (Screen.height * 0.165f)) {
 					status = 1;
 				} else {
 					// Verificar se o arrasto foi na vertical ou na horizontal
@@ -59,7 +56,7 @@ public class selecao : MonoBehaviour {
 								idPlayer = player.Length - 1;
 							}
 						}
-						audio.Play ();
+						audios[idPlayer].Play ();
 					}
 					this.GetComponentInParent<SpriteRenderer> ().sprite = player [idPlayer].sprite;
 				}
@@ -67,9 +64,10 @@ public class selecao : MonoBehaviour {
 		} else {
 			if (status == 1) {
 				tempo -= Time.deltaTime;
-				audio.volume -= 0.1f;
 				if (tempo <= 0) {
-					SceneManager.LoadScene ("Jogo");
+					manter.idPlayer = idPlayer;
+					SceneManager.UnloadScene ("inicio");
+					SceneManager.LoadScene ("estrada");
 				}
 			}
 		}

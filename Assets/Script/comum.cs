@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class comum : MonoBehaviour {
 
-	private const float limiteInferior = -4.75f;
-	private const float limiteEsquerdo = -8;
-	private const float limiteDireito = 8;
+	public const float limiteInferior = -4.35f;
+	public const float limiteEsquerdo = -8;
+	public const float limiteDireito = 8;
 
 	public static void Log(string msg){
 		Debug.LogError (msg);
@@ -19,7 +20,7 @@ public class comum : MonoBehaviour {
 		}
 	}
 
-	public static Vector2 trataMovimentoOld(SpriteRenderer playerSR, Vector3 posicao, float X, float Y, float velocidade){
+	public static Vector2 trataMovimentoOld(SpriteRenderer playerSR, Vector3 posicao, float X, float Y, float velocidade, AudioSource audio){
 		float posRetaX, posRetaY;
 		float posClickX, posClickY;
 		float posicaoX, posicaoY;
@@ -75,6 +76,7 @@ public class comum : MonoBehaviour {
 				posicaoY = 0;
 			}
 		}
+		PlayAudio (audio);
 		return new Vector2(posicaoX, posicaoY);
 	}
 
@@ -88,7 +90,7 @@ public class comum : MonoBehaviour {
 			// Arrastou para direita
 			if (posicaoFinal.x > posicaoInicial.x) {
 				if (X < limiteDireito) {
-					posicaoX = velocidade;
+					posicaoX = velocidade * 10;
 					posicaoY = 0;
 					playerSR.flipX = false;
 				} else {
@@ -98,7 +100,7 @@ public class comum : MonoBehaviour {
 			} else {
 				// Arrastou para esquerda
 				if (X > limiteEsquerdo) {
-					posicaoX = velocidade * -1;
+					posicaoX = velocidade * -10;
 					posicaoY = 0;
 					playerSR.flipX = true;
 				} else {
@@ -110,12 +112,12 @@ public class comum : MonoBehaviour {
 			// Arrasto vertical
 			// Arrastou para cima
 			if (posicaoFinal.y > posicaoInicial.y) {
-				posicaoY = velocidade;
+				posicaoY = velocidade * 10;
 				posicaoX = 0;
 			} else {
 				// Arrastou para baixo
 				if (Y > limiteInferior) {
-					posicaoY = velocidade * -1;
+					posicaoY = velocidade * -10;
 					posicaoX = 0;
 				} else {
 					// Verifica se excedeu limite inferior
@@ -166,10 +168,29 @@ public class comum : MonoBehaviour {
 		return new Vector2 (posicaoX, posicaoY);
 	}
 
-	public static Vector2 trataRio(float X, float Y, Collision2D colisao){
-		float posicaoX, posicaoY;
-		posicaoX = X;
-		posicaoY = colisao.transform.position.y;
-		return new Vector2 (posicaoX, posicaoY);
+	public static void trataRio(ref Vector2 posicaoPlayer, ref Vector2 ultimaPosicao, float recuo, AudioSource audio, ref int tempo){
+		// verifica se o jogador está parado no rio. Se está, então vai afogar.
+		if (posicaoPlayer.y > -3f && posicaoPlayer.y < 2.5f) {
+			if (posicaoPlayer == ultimaPosicao) {
+				tempo += 1;
+				if (tempo > 20) {
+					manter.morri = true;
+					SceneManager.UnloadScene ("rio");
+					SceneManager.LoadScene ("estrada");
+				}
+			} else {
+				tempo = 0;
+			}
+		} else {
+			tempo = 0;
+		}
+		ultimaPosicao = posicaoPlayer;
+
+		// verifica constantemente se chegou nos limites direito e esquerdo (tora / tartaruga)
+		if (posicaoPlayer.x > comum.limiteDireito) {
+			posicaoPlayer = new Vector2 (comum.limiteDireito - recuo, posicaoPlayer.y);
+		} else if (posicaoPlayer.x < comum.limiteEsquerdo) {
+			posicaoPlayer = new Vector2 (comum.limiteEsquerdo + recuo, posicaoPlayer.y);
+		}
 	}
 }

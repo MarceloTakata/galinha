@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class pontuacao : MonoBehaviour {
 
-	public static int pontos;
-	public static int fase;
 	public Text pontosTXT;
 
 	public Sprite celeiroVazio;
@@ -16,20 +14,18 @@ public class pontuacao : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		pontos = 0;
-		fase = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		pontosTXT.text = "Pontos: " + pontos.ToString () + " Fase: " + fase.ToString () + " Player selectonado: " + selecao.idPlayer;
+		pontosTXT.text = "Pontos: " + manter.pontos.ToString () + " Fase: " + manter.fase.ToString () + " Player selectonado: " + manter.idPlayer;
 		// Se os 5 celeiros forem ocupados
-		if (pontuacao.pontos == 5) {
+		if (manter.pontos == 5) {
 			// Zera
-			pontuacao.pontos = 0;
+			manter.pontos = 0;
 			// Sobe de fase
-			pontuacao.fase += 1;
-			// Obtém todos os objetos do tipo SpriteRenderer
+			manter.fase += 1;
+/*			// Obtém todos os objetos do tipo SpriteRenderer
 			celeiros = FindObjectsOfType<SpriteRenderer> ();
 			// Loop para pegar os objetos do tipo SpriteRenderer
 			foreach (SpriteRenderer c in celeiros){
@@ -46,6 +42,7 @@ public class pontuacao : MonoBehaviour {
 				// Esvazia o celeiro
 				c.jaOcupado = false;
 			}
+			*/
 		}
 	}
 }
