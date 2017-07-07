@@ -40,7 +40,7 @@ public class celeiro : MonoBehaviour {
 				// TEMP: Soma 1 na pontuação
 				manter.pontos += 1;
 				// Coloca o player na posição inicial
-				colisao.gameObject.transform.position = new Vector2 (0, comum.limiteInferior);
+				//colisao.gameObject.transform.position = new Vector2 (0, comum.limiteInferior);
 				// Marca que está ocupado
 				jaOcupado = true;
 				idCeleiro = int.Parse (this.gameObject.name.Substring (7, 1).ToString ());
@@ -49,7 +49,7 @@ public class celeiro : MonoBehaviour {
 				comum.PlayAudio(audio);
 				// Altera a imagem do celeiro
 				this.gameObject.GetComponent<SpriteRenderer> ().sprite = celeiroCheio;
-				SceneManager.UnloadSceneAsync ("rio");
+				//SceneManager.UnloadSceneAsync ("rio");
 				SceneManager.LoadSceneAsync ("estrada");
 			}
 		}

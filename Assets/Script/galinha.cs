@@ -41,10 +41,10 @@ public class galinha : MonoBehaviour {
 		if (manter.morri == true) {
 			manter.morri = false;
 			comum.PlayAudio (audioMorri);
-			player.position = new Vector2 (0f, -4.35f);
+			player.position = new Vector2 (0f, comum.limiteInferior);
 		} else {
 			playerSR.flipX = manter.flip;
-			player.position = new Vector2 (manter.xPosPlayer, -4.35f);
+			player.position = new Vector2 (manter.xPosPlayer, comum.limiteInferior);
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class galinha : MonoBehaviour {
 			if (player.position.y > 4.2f) {
 				manter.xPosPlayer = player.position.x;
 				manter.flip = playerSR.flipX;
-				SceneManager.UnloadScene ("estrada");
+				//SceneManager.UnloadScene ("estrada");
 				SceneManager.LoadScene ("rio");
 			}
 		}
@@ -115,9 +115,9 @@ public class galinha : MonoBehaviour {
 		string tipoVeiculo;
 		int velocidadeVeiculo;
 		tipoVeiculo = colisao.gameObject.tag.Substring (0, 1);
-		if (this.gameObject.scene.name == "estrada") {
-			// Se o objeto que colidiu com o player for V1, V2, V3,...,Vn (primeira posição da tag = "V")
-			if (tipoVeiculo == "V") {
+		// Se o objeto que colidiu com o player for V1, V2, V3,...,Vn (primeira posição da tag = "V")
+		if (tipoVeiculo == "V") {
+			if (this.gameObject.scene.name == "estrada") {
 				velocidadeVeiculo = int.Parse (colisao.gameObject.tag.Substring (1, 1));
 				// Toca áudio de batida
 				comum.PlayAudio (audioBatida);
@@ -125,6 +125,11 @@ public class galinha : MonoBehaviour {
 				player.position = comum.trataRecuo (this.transform.position.x, this.transform.position.y, colisao.transform.position.x, colisao.transform.position.x + colisao.collider.offset.x, recuo, velocidadeVeiculo);
 				// Inicializa a contagem regressiva para poder andar de novo
 				tempoParaAndar = tempoParaAndarDefault;
+			}
+		} else if (tipoVeiculo == "O") {
+			if (this.gameObject.scene.name == "rio") {
+				manter.morri = true;
+				SceneManager.LoadScene ("estrada");
 			}
 		}
 	}

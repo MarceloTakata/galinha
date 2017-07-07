@@ -169,13 +169,14 @@ public class comum : MonoBehaviour {
 	}
 
 	public static void trataRio(ref Vector2 posicaoPlayer, ref Vector2 ultimaPosicao, float recuo, AudioSource audio, ref int tempo){
+/*
 		// verifica se o jogador está parado no rio. Se está, então vai afogar.
 		if (posicaoPlayer.y > -3f && posicaoPlayer.y < 2.5f) {
 			if (posicaoPlayer == ultimaPosicao) {
 				tempo += 1;
 				if (tempo > 20) {
 					manter.morri = true;
-					SceneManager.UnloadScene ("rio");
+					//SceneManager.UnloadScene ("rio");
 					SceneManager.LoadScene ("estrada");
 				}
 			} else {
@@ -185,6 +186,7 @@ public class comum : MonoBehaviour {
 			tempo = 0;
 		}
 		ultimaPosicao = posicaoPlayer;
+*/
 
 		// verifica constantemente se chegou nos limites direito e esquerdo (tora / tartaruga)
 		if (posicaoPlayer.x > comum.limiteDireito) {

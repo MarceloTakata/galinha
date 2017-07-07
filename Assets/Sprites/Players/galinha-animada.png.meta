@@ -1,12 +1,14 @@
 fileFormatVersion: 2
 guid: bf9e2548be5ad46219dace17322bea3f
-timeCreated: 1496844152
+timeCreated: 1499275273
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: galinha-animada_0
     21300002: galinha-animada_1
     21300004: galinha-animada_2
+    21300006: galinha-animada_3
+    21300008: galinha-animada_4
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -92,12 +94,12 @@ TextureImporter:
       name: galinha-animada_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 48
         y: 0
-        width: 500
+        width: 399
         height: 470
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -105,12 +107,12 @@ TextureImporter:
       name: galinha-animada_1
       rect:
         serializedVersion: 2
-        x: 500
-        y: 0
-        width: 500
-        height: 470
+        x: 502
+        y: 3
+        width: 496
+        height: 464
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -118,12 +120,38 @@ TextureImporter:
       name: galinha-animada_2
       rect:
         serializedVersion: 2
-        x: 1000
+        x: 1004
         y: 0
-        width: 500
+        width: 497
         height: 470
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: galinha-animada_3
+      rect:
+        serializedVersion: 2
+        x: 1548
+        y: 0
+        width: 400
+        height: 470
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: galinha-animada_4
+      rect:
+        serializedVersion: 2
+        x: 2049
+        y: 0
+        width: 398
+        height: 470
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
